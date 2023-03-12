@@ -1,0 +1,34 @@
+.container{
+    position: relative;
+}
+
+.outer{
+    z-index: 9;
+    position: absolute;
+    width: 98%;
+}
+
+.overlay {
+    height: 2.2rem;
+    margin: 30px;
+    border: 1px solid grey;
+    background: whitesmoke;
+    
+}
+
+.search_row_button{
+    /* display: none; */
+    opacity: 0%;
+    right: 18px;
+    position: absolute;
+    height: 33px;
+    border-radius: 11px;
+    width: 11%;
+    background: greenyellow;
+    
+}
+
+.overlay:hover  .search_row_button{
+    opacity: 100%;
+    
+}
