@@ -8,9 +8,10 @@ import EditUser from "./users/EditUser";
 import ViewUser from "./users/ViewUser";
 import StockNavbar from "./layout/StockNavbar";
 import StockSearch from "./layout/StockSearch/StockSearch";
+import StockHome from "./pages/StockHome";
 
 function App() {
-  return (
+  return ( 
     <div className="App">
       <Router>
         <Navbar />
@@ -18,7 +19,8 @@ function App() {
         <StockSearch />
 
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          {/* <Route exact path="/" element={<Home />} /> */}
+          <Route exact path="/" element={<StockHome />} />
           <Route exact path="/adduser" element={<AddUser />} />
           <Route exact path="/edituser/:id" element={<EditUser />} />
           <Route exact path="/viewuser/:id" element={<ViewUser />} />

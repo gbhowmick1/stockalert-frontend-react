@@ -9,10 +9,11 @@
 }
 
 .overlay {
-    height: 2.2rem;
+    height: 2.3rem;
     margin: 30px;
-    border: 1px solid grey;
-    background: whitesmoke;
+    border: 0.001px solid grey;
+    background:  whitesmoke;
+    /* background:  red; */
     
 }
 
@@ -31,4 +32,19 @@
 .overlay:hover  .search_row_button{
     opacity: 100%;
     
+}
+
+.exchange_name{
+    position: absolute;
+    left: 30%;
+}
+
+.company_name{
+    position: absolute;
+    left: 37%;
+}
+
+.scrip_name{
+    position: absolute;
+    left: 67%;
 }
