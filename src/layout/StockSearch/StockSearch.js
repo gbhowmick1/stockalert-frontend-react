@@ -26,7 +26,7 @@ export default function StockSearch() {
       updateWatchlist();
     })
     .catch(error => {
-      console.log(error);
+      console.error(error);
     });
   }
 
@@ -37,7 +37,6 @@ export default function StockSearch() {
 
 
   useEffect(() => {
-    console.log("inside..")
     if(value.length>0){
       loadStock(value);
 

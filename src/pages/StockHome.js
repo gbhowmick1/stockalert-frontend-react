@@ -17,8 +17,6 @@ const StockHome = () => {
 
   function updateState() {
     const state = store.getState();
-    console.log("state")
-    console.log(state)
     setStocks(state?.watchlist);
   } 
 
