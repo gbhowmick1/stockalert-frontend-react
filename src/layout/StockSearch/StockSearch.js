@@ -1,30 +1,51 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
 import "./StockSearch.css"
+import { setWatchlistData } from "../../action/Watchlist";
+import { store } from "../../Store/Store";
+
 
 export default function StockSearch() {
   const [value, setValue] = useState('');
   const [result, setResult] = useState([]);
 
+  const loadStock = async (name) => {
+    const result = await axios.get(`${process.env.REACT_APP_API_URL}/stock/search?name=${name}`);
+  };
+
+  const handleAddtoWatchlist = async (scrip_id) => {
+    axios.post(`${process.env.REACT_APP_API_URL}/watchlist/add`, 
+    {
+      num_user_id: 1,
+      num_scrip_id: scrip_id,
+      timestamp: new Date().toISOString()
+    })
+    .then(res => {
+      setResult([])
+      setValue('')
+      updateWatchlist();
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }
+
+  const updateWatchlist = async () => {
+    const result = await axios.get(`${process.env.REACT_APP_API_URL}/watchlist/getbyuid/1`);
+    store.dispatch(setWatchlistData(result.data))
+  };
+
+
   useEffect(() => {
-    console.log("inside..")
     if(value.length>0){
-      // call axios api and get serach result
-      // USING DEMO JSON
-      const arr = ["abc", "bcd","ghf","uyt","asg","qwq"]
-      setResult(x=> {
-        return [...x,arr];
-      });
+      loadStock(value);
+
     } else {
       setResult([]);
     }
   }, [value]);
 
-  // const loadUsers = async () => {
-  //   const result = await axios.get(`${process.env.REACT_APP_API_URL}/users`);
-  //   setUsers(result.data);
-  // };
+
 
 
 
@@ -40,9 +61,13 @@ export default function StockSearch() {
           {
             // <a href="#"> key </a>
           result.map((key,index)=>{
-              return <div className="overlay" style={{margin:"1px"}}>
-                  <label>{key}</label> 
-                  <button className="search_row_button">ADD</button>  
+              return <div className="overlay" style={{margin:"0px"}}>
+                  <button className="exchange_name">{key.str_exchange}</button>
+                  <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label> 
+                  <label className="company_name">{key.str_company_name}</label>  
+                  <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label> 
+                  <label className="scrip_name">   {key.str_scrip_name}  </label>
+                  <button className="search_row_button" onClick={()=> handleAddtoWatchlist(key.num_scrip_id)} >ADD</button>  
               </div>
             })
           }
