@@ -11,6 +11,7 @@ export default function StockSearch() {
 
   const loadStock = async (name) => {
     const result = await axios.get(`${process.env.REACT_APP_API_URL}/stock/search?name=${name}`);
+    setResult(result.data)
   };
 
   const handleAddtoWatchlist = async (scrip_id) => {
