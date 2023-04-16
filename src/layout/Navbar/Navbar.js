@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import "./Navbar.css"
 export default function Navbar() {
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
         <div className="container-fluid">
-          <Link className="navbar-brand" to="/">
-            Full Stack Application
+          <Link className="navbar-brand nav-style"   to="/">
+            Stock WatchList
           </Link>
           <button
             className="navbar-toggler"
@@ -21,9 +21,9 @@ export default function Navbar() {
             <span className="navbar-toggler-icon"></span>
           </button>
 
-          <Link className="btn btn-outline-light" to="/adduser">
+          {/* <Link className="btn btn-outline-light" to="/adduser">
             Add User
-          </Link>
+          </Link> */}
         </div>
       </nav>
     </div>

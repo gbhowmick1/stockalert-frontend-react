@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState , useRef} from "react";
 import axios from "axios";
 import "./StockSearch.css"
 import { setWatchlistData } from "../../action/Watchlist";
@@ -8,7 +8,7 @@ import { store } from "../../Store/Store";
 export default function StockSearch() {
   const [value, setValue] = useState('');
   const [result, setResult] = useState([]);
-
+  const stocklistRef = useRef();
   const loadStock = async (name) => {
     const result = await axios.get(`${process.env.REACT_APP_API_URL}/stock/search?name=${name}`);
     setResult(result.data)
@@ -44,6 +44,21 @@ export default function StockSearch() {
     } else {
       setResult([]);
     }
+  
+  
+  
+    const handler = (e) => {
+      if(!stocklistRef.current.contains(e.target)){
+        setResult([]);
+        setValue('')
+      }
+    } 
+    document.addEventListener("mousedown", handler);
+    return () =>{
+      document.removeEventListener("mousedown", handler);
+    }
+  
+  
   }, [value]);
 
 
@@ -57,12 +72,12 @@ export default function StockSearch() {
             onChange={(event)=> setValue(event.target.value)}
             value={value}
             />
-      <table>
+      <table ref={stocklistRef} >
       <td className="outer">
           {
             // <a href="#"> key </a>
           result.map((key,index)=>{
-              return <div className="overlay" style={{margin:"0px"}}>
+              return <div className="overlay" style={{margin:"0px"}} key={key.num_scrip_id}>
                   <button className="exchange_name">{key.str_exchange}</button>
                   <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label> 
                   <label className="company_name">{key.str_company_name}</label>  

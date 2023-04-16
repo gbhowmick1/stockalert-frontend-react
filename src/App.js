@@ -1,12 +1,12 @@
 import "./App.css";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import Navbar from "./layout/Navbar";
+import Navbar from "./layout/Navbar/Navbar";
 import Home from "./pages/Home";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AddUser from "./users/AddUser";
 import EditUser from "./users/EditUser";
 import ViewUser from "./users/ViewUser";
-import StockNavbar from "./layout/StockNavbar";
+import StockNavbar from "./layout/Navbar/StockNavbar";
 import StockSearch from "./layout/StockSearch/StockSearch";
 import StockHome from "./pages/StockHome";
 

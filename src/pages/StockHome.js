@@ -4,13 +4,14 @@ import { Link, useParams } from "react-router-dom";
 import {store} from '../Store/Store'
 import {setWatchlistData} from '../action/Watchlist'
 
+
 const StockHome = () => {
   const [stocks, setStocks] = useState([]);
 
   const { id } = useParams();
 
   useEffect(() => {
-    loadUsers();
+    getWatchlistData();
     updateState();
     store.subscribe(updateState);
   },[]);
@@ -22,15 +23,29 @@ const StockHome = () => {
 
 
 
-  const loadUsers = async () => {
+  const getWatchlistData = async () => {
     const result = await axios.get(`${process.env.REACT_APP_API_URL}/watchlist/getbyuid/1`);
     store.dispatch(setWatchlistData(result.data))
   };
-
-  const deleteUser = async (id) => {
-    await axios.delete(`${process.env.REACT_APP_API_URL}/stock/${id}`);
-    loadUsers();
+  
+  const deleteStockFromWatchlist = async (stock) => {
+    const result = await axios.delete(`${process.env.REACT_APP_API_URL}/watchlist/deletebyscripanduid/${stock.num_scrip_id}/1`);
+    getWatchlistData();
   };
+
+  const redirectToWeb = (stock) =>{
+    if(stock.str_exchange == 'NSE'){
+      window.open(`https://www.nseindia.com/get-quotes/equity?symbol=${stock.str_scrip_name}`,'_blank');
+    }
+
+    if(stock.str_exchange == 'BSE'){
+      let companyName= stock?.str_company_name;
+      companyName = companyName.trim().replace(/[^a-zA-Z ]/g, "").replace(/\s+/g, '-').toLowerCase();
+      window.open(`https://www.bseindia.com/stock-share-price/${companyName}/${stock?.str_scrip_name}/${stock?.num_scrip_code}/`,'_blank');
+    }
+
+  }
+
 
   return (
     <div className="container">
@@ -45,36 +60,42 @@ const StockHome = () => {
               <th scope="col">Action</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody >
             {stocks?.map((stock, index) => (
-              <tr key={stock?.num_scrip_id}>
-                <th scope="row" key={index}>
+            <tr key={stock?.num_scrip_id}>
+                <td scope="row" key={index}>
                   {index + 1}
-                </th>
+                </td>
                 <td>{stock?.str_scrip_name}</td>
                 <td>{stock?.str_company_name}</td>
                 <td>{stock?.str_exchange}</td>
                 <td>
-                  <Link
+                  {/* <Link
                     className="btn btn-primary mx-2"
                     to={`/viewuser/${stock?.num_scrip_id}`}
                   >
                     View
-                  </Link>
-                  <Link
+                  </Link> */}
+                  <button onClick={()=> {redirectToWeb(stock)}}
+                    className="btn btn-primary mx-2"
+
+                  >
+                    View Stock Details
+                  </button>
+                  {/* <Link
                     className="btn btn-outline-primary mx-2"
                     to={`/edituser/${stock?.id}`}
                   >
                     Edit
-                  </Link>
+                  </Link> */}
                   <button
                     className="btn btn-danger mx-2"
-                    onClick={() => deleteUser(stock?.num_scrip_id)}
+                    onClick={() => deleteStockFromWatchlist(stock)}
                   >
-                    Delete
+                    Delete From Watchlist
                   </button>
                 </td>
-              </tr>
+            </tr>
             ))}
           </tbody>
         </table>
